@@ -17,7 +17,7 @@ return new class extends Migration
             $table->decimal('amount', 10, 2);
             $table->date('date');
             $table->foreignIdFor(\App\Models\Group::class);
-            $table->foreignIdFor(\App\Models\User::class, 'payer_id'); // user who paid
+            $table->foreignIdFor(\App\Models\GroupUser::class, 'paid_by');
             $table->timestamps();
         });
     }

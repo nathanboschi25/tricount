@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('expense_parts', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(\App\Models\Expense::class);
-            $table->foreignIdFor(\App\Models\User::class);
+            $table->foreignIdFor(\App\Models\GroupUser::class, 'due_by');
             $table->decimal('amount', 10, 2);
             $table->timestamps();
         });
