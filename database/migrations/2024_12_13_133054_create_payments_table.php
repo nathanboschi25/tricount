@@ -11,12 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('payment', function (Blueprint $table) {
+        Schema::create('payments', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(\App\Models\User::class, 'user_payer_id');  // user who paid
-            $table->foreignIdFor(\App\Models\User::class, 'user_receiver_id');  // user who received the payment
-            $table->float('amount');
+            $table->foreignIdFor(\App\Models\User::class, 'payer_id'); // user who paid
+            $table->foreignIdFor(\App\Models\User::class, 'receiver_id'); // user who received
+            $table->decimal('amount', 10, 2);
             $table->date('date');
+            $table->foreignIdFor(\App\Models\Group::class);
             $table->timestamps();
         });
     }
@@ -26,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('payment');
+        Schema::dropIfExists('payments');
     }
 };

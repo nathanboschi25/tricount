@@ -11,11 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('expense_part', function (Blueprint $table) {
+        Schema::create('expenses', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(\App\Models\Expense::class, 'expense_id');
-            $table->foreignIdFor(\App\Models\User::class, 'user_id');
-            $table->float('amount');
+            $table->string('description');
+            $table->decimal('amount', 10, 2);
+            $table->date('date');
+            $table->foreignIdFor(\App\Models\Group::class);
+            $table->foreignIdFor(\App\Models\User::class, 'payer_id'); // user who paid
             $table->timestamps();
         });
     }
@@ -25,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('expense_part');
+        Schema::dropIfExists('expenses');
     }
 };
