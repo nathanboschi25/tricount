@@ -19,7 +19,7 @@ class ExpenseFactory extends Factory
     public function definition(): array
     {
         return [
-            'description' => $this->faker->country(),
+            'description' => $this->faker->text(),
             'amount' => $this->faker->randomFloat(2, 10, 200),
             'date' => $this->faker->date(),
             'group_id' => Group::factory(),

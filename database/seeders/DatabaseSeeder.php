@@ -2,9 +2,12 @@
 
 namespace Database\Seeders;
 
+use App\Models\Expense;
+use App\Models\ExpensePart;
 use App\Models\Group;
 use App\Models\GroupUser;
 use App\Models\User;
+
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -39,11 +42,15 @@ class DatabaseSeeder extends Seeder
             'owner_id' => $lucas->id,
         ]);
 
+
         // add lucas to the group
-        GroupUser::factory()->create([
+        $createdUser = GroupUser::factory()->create([
             'group_id' => $group->id,
             'user_id' => $lucas->id,
         ]);
+
+        // add the created groupuser to a list of created groupusers
+        $groupUsers[] = $createdUser;
 
         $otherUsers = $users->where('id', '!=', $lucas->id);
 
@@ -53,6 +60,21 @@ class DatabaseSeeder extends Seeder
                 'user_id' => $otherUsers->random()->id,
             ]);
             $otherUsers = $otherUsers->where('id', '!=', $createdUser->id);
+            $groupUsers[] = $createdUser;
+        }
+
+        $expense = Expense::factory()->create([
+            'group_id' => $group->id,
+            'paid_by' => $lucas->id,
+        ]);
+
+
+        foreach ($groupUsers as $groupUser) {
+            ExpensePart::factory()->create([
+                'expense_id' => $expense->id,
+                'due_by' => $groupUser->id,
+                'amount' => $expense->amount / count($groupUsers),
+            ]);
         }
     }
 }
