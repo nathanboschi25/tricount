@@ -13,7 +13,7 @@ class Group extends Model
 
     public function users()
     {
-        return $this->hasManyThrough(User::class, GroupUser::class);
+        return $this->belongsToMany(User::class, 'group_users', 'group_id', 'user_id');
     }
 
     public function owner()
