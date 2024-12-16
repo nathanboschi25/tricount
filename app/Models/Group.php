@@ -11,7 +11,7 @@ class Group extends Model
 
     protected $fillable = ['name', 'currency', 'picture', 'invitation_token', 'owner_id'];
 
-    public function groupUsers()
+    public function users()
     {
         return $this->hasManyThrough(User::class, GroupUser::class);
     }
