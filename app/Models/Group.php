@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Group extends Model
 {
+    use HasFactory;
+
     protected $fillable = ['name', 'currency', 'picture', 'invitation_token', 'owner_id'];
 
     public function groupUsers()

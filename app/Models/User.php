@@ -46,14 +46,4 @@ class User extends Authenticatable
         ];
     }
 
-    /**
-     * Get the user's full name.
-     *
-     * @return string
-     */
-    public function getFullNameAttribute(): string
-    {
-        return "{$this->first_name} {$this->last_name}";
-    }
-    
 }
