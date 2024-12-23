@@ -15,7 +15,6 @@ return new class extends Migration
             $table->foreignIdFor(\App\Models\Group::class);
             $table->foreignIdFor(\App\Models\User::class);
             $table->primary(['group_id', 'user_id']);
-            $table->timestamps();
         });
     }
 
