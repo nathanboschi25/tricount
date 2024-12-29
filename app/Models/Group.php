@@ -11,11 +11,6 @@ class Group extends Model
 
     protected $fillable = ['name', 'currency', 'picture', 'invitation_token', 'owner_id'];
 
-    public function users()
-    {
-        return $this->belongsToMany(User::class, 'group_users', 'group_id', 'user_id');
-    }
-
     public function owner()
     {
         return $this->belongsTo(User::class, 'owner_id');

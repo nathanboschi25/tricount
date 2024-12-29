@@ -54,22 +54,26 @@ class DatabaseSeeder extends Seeder
 
         $otherUsers = $users->where('id', '!=', $lucas->id);
 
-        for ($i = 0; $i < 3; $i++) {
+        for ($i = 0; $i < 2; $i++) {
             $createdUser = GroupUser::factory()->create([
                 'group_id' => $group->id,
-                'user_id' => $otherUsers->random()->id,
+                'user_id' => $otherUsers[$i+1]->id,
             ]);
             $otherUsers = $otherUsers->where('id', '!=', $createdUser->id);
             $groupUsers[] = $createdUser;
         }
 
         $expense = Expense::factory()->create([
+            'description' => 'Essence',
             'group_id' => $group->id,
             'paid_by' => $lucas->id,
         ]);
 
 
         foreach ($groupUsers as $groupUser) {
+            if ($groupUser->user_id === $lucas->id) {
+                continue;
+            }
             ExpensePart::factory()->create([
                 'expense_id' => $expense->id,
                 'due_by' => $groupUser->id,

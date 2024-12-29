@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Group;
+use App\Models\GroupUser;
 use Illuminate\Http\Request;
 
 class GroupController extends Controller
@@ -10,9 +11,8 @@ class GroupController extends Controller
     public function index()
     {
         // all groups where a GroupUser exists with the connected user
-        $groups = Group::whereHas('users', function ($query) {
-            $query->where('id', auth()->id());
-        })->get();
+        $groups_id = GroupUser::where('user_id', auth()->id())->pluck('group_id');
+        $groups = Group::whereIn('id', $groups_id)->get();
 
         return view('groups.index', compact('groups'));
     }
@@ -66,5 +66,24 @@ class GroupController extends Controller
         $group->delete();
 
         return redirect()->route('groups.index');
+    }
+
+    public function show(Group $group)
+    {
+        $groupuser = GroupUser::where('group_id', $group->id)
+            ->where('user_id', auth()->id())
+            ->firstOrFail();
+
+        $debts = $groupuser->debts();
+
+        $made_payments = $groupuser->sentPayments();
+
+        $made_expenses = $groupuser->expenses();
+
+        $due_total = $debts->sum('amount') - $made_payments->sum('amount') - $made_expenses->sum('amount');
+
+        $expenses = $made_expenses->get();
+
+        return view('groups.view', compact('group', 'due_total', 'expenses'));
     }
 }

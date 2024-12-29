@@ -21,7 +21,7 @@ Route::get('/groups/create', [GroupController::class, 'create'])
 Route::post('/groups', [GroupController::class, 'store'])
     ->middleware(['auth', 'verified'])->name('groups.store');
 
-Route::get('/groups/{group}', [GroupController::class, 'edit'])
+Route::get('/groups/{group}/edit', [GroupController::class, 'edit'])
     ->middleware(['auth', 'verified'])->name('groups.edit');
 
 Route::put('/groups/{group}', [GroupController::class, 'update'])
@@ -29,6 +29,9 @@ Route::put('/groups/{group}', [GroupController::class, 'update'])
 
 Route::delete('/groups/{group}', [GroupController::class, 'destroy'])
     ->middleware(['auth', 'verified'])->name('groups.destroy');
+
+Route::get('/groups/{group}', [GroupController::class, 'show'])
+    ->middleware(['auth', 'verified'])->name('groups.show');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

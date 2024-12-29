@@ -12,9 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('group_users', function (Blueprint $table) {
+            $table->id();
             $table->foreignIdFor(\App\Models\Group::class);
             $table->foreignIdFor(\App\Models\User::class);
-            $table->primary(['group_id', 'user_id']);
+            $table->unique(['group_id', 'user_id']);
             $table->timestamps();
         });
     }
