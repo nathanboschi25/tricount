@@ -46,4 +46,12 @@ class User extends Authenticatable
         ];
     }
 
+    /**
+     * Get the groups for the user.
+     */
+    public function groupUsers()
+    {
+        return $this->hasMany(GroupUser::class);
+    }
+
 }

@@ -35,4 +35,9 @@ class Group extends Model
     {
         return $this->groupUsers()->where('user_id', $user->id)->first()->balance();
     }
+
+    public function groupUsers()
+    {
+        return $this->hasMany(GroupUser::class);
+    }
 }

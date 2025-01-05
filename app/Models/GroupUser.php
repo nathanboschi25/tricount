@@ -34,7 +34,7 @@ class GroupUser extends Model
     /**
      * Payments made by other users in the group to the user
      */
-    public function reiceivedPayments()
+    public function receivedPayments()
     {
         return $this->hasMany(Payment::class, 'paid_to');
     }

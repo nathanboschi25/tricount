@@ -10,4 +10,8 @@ class ExpensePart extends Model
     use HasFactory;
     //
     protected $fillable = ['amount', 'expense_id', 'due_by'];
+
+    public function expense() {
+        return $this->belongsTo(Expense::class);
+    }
 }

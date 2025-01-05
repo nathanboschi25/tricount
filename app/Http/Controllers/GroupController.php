@@ -74,16 +74,42 @@ class GroupController extends Controller
             ->where('user_id', auth()->id())
             ->firstOrFail();
 
-        $debts = $groupuser->debts();
-
+        // parts of made payments by other users
+        $debts = $groupuser->debts()->with('expense');
         $made_payments = $groupuser->sentPayments();
-
+        $received_payments = $groupuser->receivedPayments();
         $made_expenses = $groupuser->expenses();
-
-        $due_total = $debts->sum('amount') - $made_payments->sum('amount') - $made_expenses->sum('amount');
 
         $expenses = $made_expenses->get();
 
-        return view('groups.view', compact('group', 'due_total', 'expenses'));
+        // load the user relation to avoid n+1 queries
+        $made_payments = $made_payments
+            ->where('paid_to', '!=', $groupuser->id)
+            ->with('receiver.user')->get();
+        $received_payments = $received_payments
+            ->where('paid_by', '!=', $groupuser->id)
+            ->with('sender.user')->get();
+
+        $debts_to_others = [];
+
+        foreach ($group->groupUsers()->get() as $index => $groupUser) {
+            $debts_to_others[$index-1]['user'] = $groupUser->user;
+            $debts_to_others[$index-1]['amount'] = 0;
+            // filter with expense.paid_by
+            foreach ($debts->get() as $debt) {
+                if ($debt['expense']['paid_by'] === $groupUser->id) {
+                    $debts_to_others[$index-1]['amount'] += $debt['amount'];
+                }
+            }
+            foreach ($made_payments->get() as $made_payment) {
+                if ($made_payment['receiver']['id'] === $groupUser->id) {
+                    $debts_to_others[$index-1]['amount'] -= $made_payment['amount'];
+                }
+            }
+        }
+
+        $due_total = $debts->sum('amount') - $made_payments->sum('amount') + $received_payments->sum('amount') - $made_expenses->sum('amount');
+
+        return view('groups.view', compact('group', 'due_total', 'debts_to_others', 'expenses', 'made_payments', 'received_payments'));
     }
 }
