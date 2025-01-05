@@ -35,6 +35,12 @@ Route::delete('/groups/{group}', [GroupController::class, 'destroy'])
 Route::get('/groups/{group}', [GroupController::class, 'show'])
     ->middleware(['auth', 'verified'])->name('groups.show');
 
+Route::get('/groups/{group}/members', [GroupController::class, 'showMembers'])
+    ->middleware(['auth', 'verified'])->name('groups.members');
+
+Route::post('/groups/{group}/members', [GroupController::class, 'setMembers'])
+    ->middleware(['auth', 'verified'])->name('groups.members-set');
+
 Route::get('/groups/{group}/expenses/create', [ExpenseController::class, 'create'])
     ->middleware(['auth', 'verified'])->name('expenses.create');
 

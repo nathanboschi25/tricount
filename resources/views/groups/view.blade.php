@@ -30,7 +30,7 @@
                 <div class="p-6 text-gray-900">
                     @foreach($debts_to_others as $debt)
                         @if($debt['user']['id'] != auth()->user()->id)
-                            <p>{{ $debt['user']['name']  }} - <b>{{ $debt['amount'] }}  {{$group['currency']}}</b></p>
+                            <p><a href="{{ route('payments.create', [$group, $debt['groupUser']]) }}">{{ $debt['user']['name'] }}</a> - <b>{{ $debt['amount'] }}  {{$group['currency']}}</b></p>
                         @endif
                     @endforeach
                 </div>

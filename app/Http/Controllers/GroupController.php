@@ -94,6 +94,7 @@ class GroupController extends Controller
 
         foreach ($group->groupUsers()->get() as $index => $groupUser) {
             $debts_to_others[$index-1]['user'] = $groupUser->user;
+            $debts_to_others[$index-1]['groupUser'] = $groupUser;
             $debts_to_others[$index-1]['amount'] = 0;
             // filter with expense.paid_by
             foreach ($debts->get() as $debt) {
@@ -101,7 +102,7 @@ class GroupController extends Controller
                     $debts_to_others[$index-1]['amount'] += $debt['amount'];
                 }
             }
-            foreach ($made_payments->get() as $made_payment) {
+            foreach ($made_payments as $made_payment) {
                 if ($made_payment['receiver']['id'] === $groupUser->id) {
                     $debts_to_others[$index-1]['amount'] -= $made_payment['amount'];
                 }
@@ -111,5 +112,14 @@ class GroupController extends Controller
         $due_total = $debts->sum('amount') - $made_payments->sum('amount') + $received_payments->sum('amount') - $made_expenses->sum('amount');
 
         return view('groups.view', compact('group', 'due_total', 'debts_to_others', 'expenses', 'made_payments', 'received_payments'));
+    }
+
+    public function showMembers(Group $group) {
+        // TODO:
+        return view('groups.members', compact('group'));
+    }
+
+    public function setMembers(Group $group, Request $request) {
+        // TODO:
     }
 }
