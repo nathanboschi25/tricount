@@ -36,7 +36,10 @@ class GroupController extends Controller
             'invitation_token' => bin2hex(random_bytes(3)),
         ]);
 
-        $group->users()->attach(auth()->id());
+        $groupUser = GroupUser::create([
+            'user_id' => auth()->id(),
+            'group_id' => $group->id,
+        ]);
 
         return redirect()->route('groups.index');
     }
