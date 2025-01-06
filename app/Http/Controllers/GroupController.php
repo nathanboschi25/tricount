@@ -85,9 +85,15 @@ class GroupController extends Controller
         $made_expenses = $groupuser->expenses();
 
         $expenses = $made_expenses->get();
-        $user_debts = $groupuser->debts()
-            ->where('due_by', '!=', auth()->id())
-            ->get();
+
+        $user_debts = [];
+        foreach ($debts->get() as $debt) {
+            if ($debt->expense->paid_by != auth()->id()) {
+                $user_debts[] = $debt;
+            }
+        }
+
+
 
         // load the user relation to avoid n+1 queries
         $made_payments = $made_payments
