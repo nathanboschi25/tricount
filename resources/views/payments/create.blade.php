@@ -31,8 +31,30 @@
                 @endif
 
                 @csrf
+                    <input type="hidden" name="group_id" value="{{ $group['id']  }}">
+                <div>
+                    <label for="paid_to" class="block text-sm font-medium text-gray-700">Group user:</label>
+                    <input type="text" id="paid_to" name="paid_to" value="{{ $groupUser->id }}" required
+                           class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                </div>
 
-{{--                    TODO : Make the create form --}}
+                <br>
+
+                <div>
+                    <label for="amount" class="block text-sm font-medium text-gray-700">Amount:</label>
+                    <input type="number" id="amount" name="amount" value="{{ old('amount') }}" required
+                           placeholder="{{ $group['currency']  }}"
+                           class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                </div>
+
+                <br>
+
+                <div>
+                    <label for="date" class="block text-sm font-medium text-gray-700">Date:</label>
+                    <input type="date" id="date" name="date" value="{{ old('date') }}" required
+                           class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                </div>
+                <br>
 
 
                 <button type="submit"

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Group;
 use App\Models\GroupUser;
+use App\Models\Payment;
 use Illuminate\Http\Request;
 
 class PaymentController extends Controller
@@ -14,7 +15,24 @@ class PaymentController extends Controller
     }
 
     public function store(Request $request, Group $group, GroupUser $groupUser) {
-        // TODO: the amount in $request is created between the connected user to the $groupUser
+        $request->validate([
+            'amount' => 'numeric|required',
+            'date' => 'date|required',
+        ]);
+
+        $groupuser = GroupUser::where('group_id', $group->id)
+            ->where('user_id', auth()->id())
+            ->firstOrFail();
+
+        $payment = Payment::create([
+            'group_id' => $group->id,
+            'paid_by' => $groupuser->id,
+            'paid_to' => $request->paid_to,
+            'amount' => $request->amount,
+            'date' => $request->date
+        ]);
+
+        return redirect()->route('groups.show', [$group]);
     }
 
 }

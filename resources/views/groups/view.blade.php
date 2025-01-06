@@ -6,10 +6,6 @@
             </h2>
 
             <div class="flex items-center gap-6">
-                <a href=""
-                   class="inline-flex items-center justify-center w-10 h-10 bg-indigo-600 rounded-full hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                    members
-                </a>
 
                 <a href="{{ route('expenses.create', ['group' => $group['id']]) }}"
                    class="inline-flex items-center justify-center w-10 h-10 bg-indigo-600 rounded-full hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
@@ -102,7 +98,7 @@
                         <div class="p-6">
                             <div class="flex items-center justify-between gap-6">
                                 <div style="max-width: 50vw">
-                                    {{ $debt['expense']['description'] }} (- {{ $debt['expense']['amount'] }})
+                                    <p><b>{{ $debt['expense']['description'] }}</b> (- {{ $debt['expense']['amount'] }})</p>
                                 </div>
                                 <div>
                                     <b>- {{$debt['amount']}}</b>
