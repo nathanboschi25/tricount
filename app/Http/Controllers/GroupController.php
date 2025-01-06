@@ -78,12 +78,16 @@ class GroupController extends Controller
             ->firstOrFail();
 
         // parts of made payments by other users
-        $debts = $groupuser->debts()->with('expense');
+        $debts = $groupuser->debts()
+            ->with('expense');
         $made_payments = $groupuser->sentPayments();
         $received_payments = $groupuser->receivedPayments();
         $made_expenses = $groupuser->expenses();
 
         $expenses = $made_expenses->get();
+        $user_debts = $groupuser->debts()
+            ->where('due_by', '!=', auth()->id())
+            ->get();
 
         // load the user relation to avoid n+1 queries
         $made_payments = $made_payments
@@ -114,7 +118,7 @@ class GroupController extends Controller
 
         $due_total = $debts->sum('amount') - $made_payments->sum('amount') + $received_payments->sum('amount') - $made_expenses->sum('amount');
 
-        return view('groups.view', compact('group', 'due_total', 'debts_to_others', 'expenses', 'made_payments', 'received_payments'));
+        return view('groups.view', compact('group', 'due_total', 'debts_to_others', 'expenses', 'made_payments', 'received_payments', 'user_debts'));
     }
 
     public function showMembers(Group $group) {

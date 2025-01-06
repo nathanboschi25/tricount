@@ -94,6 +94,25 @@
                 </div>
             </div>
         @endif
+        @if(count($user_debts) > 0)
+            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 pt-6">
+                <b class="text-gray-900">Mes parts</b>
+                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                    @foreach($user_debts as $debt)
+                        <div class="p-6">
+                            <div class="flex items-center justify-between gap-6">
+                                <div style="max-width: 50vw">
+                                    {{ $debt['expense']['description'] }} (- {{ $debt['expense']['amount'] }})
+                                </div>
+                                <div>
+                                    <b>- {{$debt['amount']}}</b>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        @endif
     </div>
 </x-app-layout>
 
